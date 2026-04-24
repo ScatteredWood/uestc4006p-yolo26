@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import json
-import sys
-import os
 import importlib.util
+import json
+import os
+import sys
 import time
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 import cv2
 
