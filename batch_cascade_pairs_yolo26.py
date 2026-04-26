@@ -13,11 +13,11 @@ import cv2
 # ==============================
 # 配置区
 # ==============================
-REPO_ROOT = Path(r"E:\repositories\ultralytics_yolo26")
-CASCADE_SCRIPT = Path(r"E:\repositories\ultralytics\uestc4006p\scripts\cascade_infer_detseg.py")
+REPO_ROOT = Path(__file__).resolve().parent
+CASCADE_SCRIPT = Path(os.getenv("YOLO26_CASCADE_SCRIPT", "scripts/cascade_infer_detseg.py"))
 
-RUNS_ROOT = Path(r"E:\Large Files\UESTC4006P Individual Project (2025-26)\要使用的训练结果汇总")
-SOURCE_DIR = Path(r"E:\Large Files\UESTC4006P Individual Project (2025-26)\test\seg")
+RUNS_ROOT = Path(os.getenv("YOLO26_RUNS_ROOT", "runs"))
+SOURCE_DIR = Path(os.getenv("YOLO26_CASCADE_SOURCE_DIR", "datasets/seg/images/val"))
 OUT_ROOT = RUNS_ROOT / "_predict_exports" / "cascade_yolo26"
 
 DET_WHITELIST: list[str] = [

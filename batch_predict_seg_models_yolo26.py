@@ -12,7 +12,7 @@ import numpy as np
 # =========================
 # 0) yolo26 仓库路径
 # =========================
-REPO_ROOT = Path(r"E:\repositories\ultralytics_yolo26")
+REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
 os.chdir(REPO_ROOT)
 
@@ -22,8 +22,8 @@ from ultralytics import YOLO  # noqa: E402
 # =========================
 # 1) 用户配置
 # =========================
-RUNS_ROOT = Path(r"E:\Large Files\UESTC4006P Individual Project (2025-26)\要使用的训练结果汇总")
-SOURCE_DIR = Path(r"E:\Large Files\UESTC4006P Individual Project (2025-26)\test\seg")
+RUNS_ROOT = Path(os.getenv("YOLO26_RUNS_ROOT", "runs"))
+SOURCE_DIR = Path(os.getenv("YOLO26_SEG_SOURCE_DIR", "datasets/seg/images/val"))
 OUTPUT_ROOT = RUNS_ROOT / "_predict_exports" / "seg_direct_yolo26"
 
 # 只处理名字里带 26 的 seg 目录；若填写白名单，则只跑白名单

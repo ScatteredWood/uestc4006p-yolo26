@@ -143,6 +143,7 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+.ruff_cache/
 
 # Pyre type checker
 .pyre/
@@ -151,7 +152,21 @@ dmypy.json
 /datasets
 runs/
 wandb/
+logs/
+output/
+outputs/
+predict_outputs/
+val_outputs/
+train_outputs/
+results/
+checkpoints/
+export/
+exports/
 .DS_Store
+Thumbs.db
+*.tmp
+*.bak
+~$*
 
 # Neural Network weights -----------------------------------------------------------------------------------------------
 weights/

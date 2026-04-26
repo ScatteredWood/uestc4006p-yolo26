@@ -12,17 +12,13 @@ import torch
 # =============================================================================
 
 # yolo26 仓库根目录：请按你的实际路径修改
-REPO_ROOT = Path(r"E:\repositories\ultralytics_yolo26")
+REPO_ROOT = Path(__file__).resolve().parent
 
 # 训练结果根目录（里面是 train_det_26n、train_seg_26m 等）
-RUNS_ROOT = Path(
-    r"E:\Large Files\UESTC4006P Individual Project (2025-26)\要使用的训练结果汇总"
-)
+RUNS_ROOT = Path(os.getenv("YOLO26_RUNS_ROOT", "runs"))
 
 # det 直接推理测试图像目录
-SOURCE_DIR = Path(
-    r"E:\Large Files\UESTC4006P Individual Project (2025-26)\test\det"
-)
+SOURCE_DIR = Path(os.getenv("YOLO26_DET_SOURCE_DIR", "datasets/det/images/val"))
 
 # 导出目录
 EXPORT_ROOT = RUNS_ROOT / "_predict_exports" / "det_direct_yolo26"

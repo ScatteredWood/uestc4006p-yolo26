@@ -16,7 +16,7 @@ import yaml
 # =============================================================================
 # 0) 先配置你的 yolo26 仓库路径
 # =============================================================================
-REPO_ROOT = Path(r"E:\repositories\ultralytics_yolo26")
+REPO_ROOT = Path(__file__).resolve().parent
 
 # 强制把 yolo26 仓库放到最前面，确保 import 到的是这个仓库里的代码
 sys.path.insert(0, str(REPO_ROOT))
@@ -30,9 +30,7 @@ from ultralytics import YOLO  # noqa: E402
 # =============================================================================
 
 # 训练结果根目录（里面是 train_det_26n、train_seg_26m 等）
-RUNS_ROOT = Path(
-    r"E:\Large Files\UESTC4006P Individual Project (2025-26)\要使用的训练结果汇总"
-)
+RUNS_ROOT = Path(os.getenv("YOLO26_RUNS_ROOT", "runs"))
 
 # 单独给 yolo26 导出一个目录，避免和之前混在一起
 EXPORT_ROOT = RUNS_ROOT / "_eval_exports_yolo26"
@@ -40,12 +38,8 @@ DATA_YAML_DIR = EXPORT_ROOT / "data_yaml"
 RUN_REPORTS_DIR = EXPORT_ROOT / "run_reports"
 
 # det / seg 的验证集图片目录
-DET_VAL_IMAGES = Path(
-    r"E:\Large Files\UESTC4006P Individual Project (2025-26)\datasets\public\RDD2022_China\yolo_det_D00D10D20D40_seed42_v1\images\val"
-)
-SEG_VAL_IMAGES = Path(
-    r"E:\Large Files\UESTC4006P Individual Project (2025-26)\datasets\custom\crack500_SS305_CSa100_cs4029\crack500_SS305_CSa100_cs4029\images\val"
-)
+DET_VAL_IMAGES = Path(os.getenv("YOLO26_DET_VAL_IMAGES", "datasets/det/images/val"))
+SEG_VAL_IMAGES = Path(os.getenv("YOLO26_SEG_VAL_IMAGES", "datasets/seg/images/val"))
 
 # 统一评估尺寸
 DET_IMGSZ = 1024
