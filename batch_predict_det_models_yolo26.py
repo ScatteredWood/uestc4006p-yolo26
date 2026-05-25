@@ -58,10 +58,10 @@ os.chdir(REPO_ROOT)
 
 from ultralytics import YOLO  # noqa: E402
 
-
 # =============================================================================
 # 2) 工具函数
 # =============================================================================
+
 
 def ensure_dir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)
@@ -91,9 +91,7 @@ def collect_images(src_dir: Path) -> list[Path]:
     if not src_dir.is_dir():
         raise NotADirectoryError(f"源路径不是文件夹：{src_dir}")
 
-    images = sorted(
-        [p for p in src_dir.iterdir() if p.is_file() and p.suffix.lower() in IMAGE_EXTS]
-    )
+    images = sorted([p for p in src_dir.iterdir() if p.is_file() and p.suffix.lower() in IMAGE_EXTS])
     if not images:
         raise RuntimeError(f"在 {src_dir} 下没有找到图像文件。")
     return images
@@ -165,6 +163,7 @@ def run_one_model(run_dir: Path) -> None:
 # =============================================================================
 # 3) 主流程
 # =============================================================================
+
 
 def main() -> None:
     ensure_dir(EXPORT_ROOT)
