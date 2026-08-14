@@ -1,13 +1,16 @@
 # UESTC4006P YOLO26 Experiments
 
 ## 1. Overview
+
 This repository is used for the graduation project **"Design and Implementation of Road Crack Detection System Based on YOLO Network Model"**, focusing on YOLO26-related detection and segmentation experiments.
 
 ## 2. Repository Role
+
 This repository is dedicated to YOLO26-related experiments for road crack detection and segmentation.  
 It is maintained separately from the main project repository to avoid affecting the main YOLOv8/YOLOv11 experimental pipeline.
 
 ## 3. Relationship with Other Repositories
+
 - Main project repository:  
   https://github.com/ScatteredWood/UESTC4006P-Individual-Project/tree/feature/segmentation-improvement
 - GUI repository:  
@@ -16,6 +19,7 @@ It is maintained separately from the main project repository to avoid affecting 
   Current repository (`ultralytics_yolo26`), used only for YOLO26 experiments and comparison.
 
 ## 4. Project Structure
+
 The following structure reflects the current repository content:
 
 ```text
@@ -34,6 +38,7 @@ ultralytics_yolo26/
 ```
 
 ## 5. Environment
+
 - Python requirement (from `pyproject.toml`): `>=3.8`
 - Core dependencies include `torch`, `torchvision`, `opencv-python`, `pyyaml`, `numpy`, etc.
 - CLI entrypoint: `yolo` (defined by `project.scripts` in `pyproject.toml`)
@@ -49,6 +54,7 @@ pip install -e .
 ```
 
 ## 6. Dataset Preparation
+
 Datasets are not included in this repository.  
 Please prepare your own dataset and dataset YAML files (for example, `data/crack_det.yaml` or `data/crack_seg.yaml`) and pass their paths through CLI arguments or environment variables.
 
@@ -56,6 +62,7 @@ Do not hardcode personal absolute paths in reusable scripts.
 If example commands contain local paths, replace them with your own environment paths.
 
 ## 7. Training
+
 Example training commands (YOLO26 detection/segmentation):
 
 ```bash
@@ -67,6 +74,7 @@ yolo task=segment mode=train model=yolo26n-seg.yaml data=path/to/crack_seg.yaml 
 ```
 
 ## 8. Validation
+
 Validation can be executed by YOLO CLI or by the batch validation script in this repository:
 
 ```powershell
@@ -83,6 +91,7 @@ python batch_eval_yolo26.py
 Validation outputs are typically written to `runs/` or the configured export/report directories.
 
 ## 9. Prediction / Inference
+
 Prediction examples:
 
 ```powershell
@@ -102,16 +111,19 @@ $env:YOLO26_CASCADE_SCRIPT="path/to/cascade_infer_detseg.py"
 python batch_cascade_pairs_yolo26.py
 ```
 
-Prediction visualisations are saved to configured output directories.
+Prediction visualizations are saved to configured output directories.
 
 ## 10. Experimental Outputs
-Experimental outputs such as training logs, validation curves, prediction visualisations and model weights may be stored locally under directories such as `runs/`, `logs/`, `outputs/`, `results/` or `checkpoints/`. These files are treated as experimental artefacts and must not be removed during repository cleanup.
+
+Experimental outputs such as training logs, validation curves, prediction visualizations and model weights may be stored locally under directories such as `runs/`, `logs/`, `outputs/`, `results/` or `checkpoints/`. These files are treated as experimental artifacts and must not be removed during repository cleanup.
 
 ## 11. Notes
+
 - This repository is not the GUI application.
 - This repository is not the main YOLOv8/YOLOv11 improvement repository.
 - It is maintained separately for YOLO26 experiments and comparison.
 
-## 12. License / Acknowledgement
+## 12. License / Acknowledgment
+
 This repository inherits the upstream license file currently present in this repository: `LICENSE` (AGPL-3.0).  
 Upstream project reference: https://github.com/ultralytics/ultralytics
