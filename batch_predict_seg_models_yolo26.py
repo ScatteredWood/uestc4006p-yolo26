@@ -16,8 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
 os.chdir(REPO_ROOT)
 
-from ultralytics import YOLO  # noqa: E402
-
+from ultralytics import YOLO
 
 # =========================
 # 1) 用户配置
@@ -38,7 +37,7 @@ DEVICE = 0
 IMGSZ = 1024
 CONF = 0.25
 IOU = 0.50
-MAX_IMAGES = 0   # 0 表示不限制
+MAX_IMAGES = 0  # 0 表示不限制
 SAVE_MASK = True
 SAVE_TXT = False
 SHOW_PROGRESS = True
@@ -159,7 +158,7 @@ def main() -> None:
                 cv2.imwrite(str(save_dir / f"{stem}__mask_overlay.jpg"), ov2)
 
             if SHOW_PROGRESS:
-                print(f"[{run_dir.name}] {idx}/{len(images)} {img_path.name}  {dt*1000:.1f} ms")
+                print(f"[{run_dir.name}] {idx}/{len(images)} {img_path.name}  {dt * 1000:.1f} ms")
 
         total_dt = time.perf_counter() - t0_all
         with open(save_dir / "RUN_INFO.txt", "w", encoding="utf-8") as f:
