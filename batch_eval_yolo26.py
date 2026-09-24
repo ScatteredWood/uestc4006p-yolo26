@@ -12,7 +12,6 @@ import pandas as pd
 import torch
 import yaml
 
-
 # =============================================================================
 # 0) 先配置你的 yolo26 仓库路径
 # =============================================================================
@@ -22,8 +21,7 @@ REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
 os.chdir(REPO_ROOT)
 
-from ultralytics import YOLO  # noqa: E402
-
+from ultralytics import YOLO
 
 # =============================================================================
 # 1) 配置区
@@ -54,7 +52,7 @@ HALF = torch.cuda.is_available() and DEVICE != "cpu"
 
 # 类别名
 DET_NAMES = ["D00", "D10", "D20", "D40"]
-SEG_NAMES = ["crack"]   # 如果你的 seg 不是单类，这里改成真实类别名
+SEG_NAMES = ["crack"]  # 如果你的 seg 不是单类，这里改成真实类别名
 
 # 只处理名字里带 26 的 run
 RUN_NAME_KEYWORD = "26"
@@ -71,6 +69,7 @@ RUN_NAME_WHITELIST: list[str] = [
 # =============================================================================
 # 2) 工具函数
 # =============================================================================
+
 
 def ensure_dirs() -> None:
     DATA_YAML_DIR.mkdir(parents=True, exist_ok=True)
@@ -143,13 +142,11 @@ def get_best_epoch_from_ckpt(ckpt: dict) -> int | None:
 
 
 def get_weight_size_mb(weight_path: Path) -> float:
-    return weight_path.stat().st_size / (1024 ** 2)
+    return weight_path.stat().st_size / (1024**2)
 
 
 def build_val_yaml(images_val_dir: Path, names: list[str], yaml_path: Path) -> None:
-    """
-    只为本次 val 评估生成临时 YAML。
-    train/val/test 都指向 images/val，避免别的划分缺失影响解析。
+    """只为本次 val 评估生成临时 YAML。 train/val/test 都指向 images/val，避免别的划分缺失影响解析。.
     """
     dataset_root = images_val_dir.parent.parent
     data = {
@@ -172,9 +169,7 @@ def check_image_label_pairs(images_val_dir: Path) -> None:
         raise FileNotFoundError(f"缺少标注目录：{label_val_dir}")
 
     img_exts = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff", ".webp"}
-    image_files = sorted(
-        [p for p in images_val_dir.iterdir() if p.is_file() and p.suffix.lower() in img_exts]
-    )
+    image_files = sorted([p for p in images_val_dir.iterdir() if p.is_file() and p.suffix.lower() in img_exts])
 
     missing_labels = []
     for img in image_files:
@@ -203,9 +198,7 @@ def get_names_map(results, fallback_names: list[str]) -> dict[int, str]:
 
 
 def get_model_info(weight_path: Path, imgsz: int) -> dict:
-    """
-    获取 params / flops。
-    尽量兼容不同版本返回格式。
+    """获取 params / flops。 尽量兼容不同版本返回格式。.
     """
     out = {
         "layers": None,
@@ -287,7 +280,7 @@ def export_confusion_matrix(results, save_dir: Path, fallback_names: list[str]) 
         labels = [names_map[i] for i in range(n)]
 
         if mat.shape[0] == n + 1 and mat.shape[1] == n + 1:
-            labels_with_bg = labels + ["background"]
+            labels_with_bg = [*labels, "background"]
         else:
             labels_with_bg = [f"class_{i}" for i in range(mat.shape[0])]
 
@@ -315,9 +308,7 @@ def export_confusion_matrix(results, save_dir: Path, fallback_names: list[str]) 
 
 
 def export_per_class_detect(results, save_dir: Path, fallback_names: list[str]) -> None:
-    """
-    det 每类导出：
-    Precision / Recall / F1 / AP50 / AP50-95
+    """Det 每类导出： Precision / Recall / F1 / AP50 / AP50-95.
     """
     rows: list[dict[str, Any]] = []
 
@@ -386,9 +377,7 @@ def export_per_class_detect(results, save_dir: Path, fallback_names: list[str]) 
 
 
 def export_per_class_generic(results, save_dir: Path) -> None:
-    """
-    seg 先通用导出 summary()。
-    """
+    """Seg 先通用导出 summary()。."""
     try:
         rows = results.summary()
         if rows:
@@ -453,27 +442,31 @@ def build_common_row(
 
 def build_det_row(common_row: dict[str, Any], results) -> dict[str, Any]:
     row = dict(common_row)
-    row.update({
-        "precision": safe_float(getattr(results.box, "mp", None)),
-        "recall": safe_float(getattr(results.box, "mr", None)),
-        "mAP50": safe_float(getattr(results.box, "map50", None)),
-        "mAP50_95": safe_float(getattr(results.box, "map", None)),
-    })
+    row.update(
+        {
+            "precision": safe_float(getattr(results.box, "mp", None)),
+            "recall": safe_float(getattr(results.box, "mr", None)),
+            "mAP50": safe_float(getattr(results.box, "map50", None)),
+            "mAP50_95": safe_float(getattr(results.box, "map", None)),
+        }
+    )
     return row
 
 
 def build_seg_row(common_row: dict[str, Any], results) -> dict[str, Any]:
     row = dict(common_row)
-    row.update({
-        "box_precision": safe_float(getattr(results.box, "mp", None)),
-        "box_recall": safe_float(getattr(results.box, "mr", None)),
-        "box_mAP50": safe_float(getattr(results.box, "map50", None)),
-        "box_mAP50_95": safe_float(getattr(results.box, "map", None)),
-        "mask_precision": safe_float(getattr(results.seg, "mp", None)),
-        "mask_recall": safe_float(getattr(results.seg, "mr", None)),
-        "mask_mAP50": safe_float(getattr(results.seg, "map50", None)),
-        "mask_mAP50_95": safe_float(getattr(results.seg, "map", None)),
-    })
+    row.update(
+        {
+            "box_precision": safe_float(getattr(results.box, "mp", None)),
+            "box_recall": safe_float(getattr(results.box, "mr", None)),
+            "box_mAP50": safe_float(getattr(results.box, "map50", None)),
+            "box_mAP50_95": safe_float(getattr(results.box, "map", None)),
+            "mask_precision": safe_float(getattr(results.seg, "mp", None)),
+            "mask_recall": safe_float(getattr(results.seg, "mr", None)),
+            "mask_mAP50": safe_float(getattr(results.seg, "map50", None)),
+            "mask_mAP50_95": safe_float(getattr(results.seg, "map", None)),
+        }
+    )
     return row
 
 
@@ -485,6 +478,7 @@ def save_metrics_json(row: dict[str, Any], save_dir: Path) -> None:
 # =============================================================================
 # 3) 主流程
 # =============================================================================
+
 
 def main() -> None:
     ensure_dirs()
@@ -568,11 +562,13 @@ def main() -> None:
             print(f"输出目录：{save_dir}")
 
         except Exception as e:
-            failed.append({
-                "run_name": run_name,
-                "error": str(e),
-                "traceback": traceback.format_exc(),
-            })
+            failed.append(
+                {
+                    "run_name": run_name,
+                    "error": str(e),
+                    "traceback": traceback.format_exc(),
+                }
+            )
             print(f"[失败] {run_name}: {e}")
 
     if det_rows:
@@ -585,13 +581,9 @@ def main() -> None:
 
     with pd.ExcelWriter(EXPORT_ROOT / "summary_yolo26.xlsx", engine="openpyxl") as writer:
         if det_rows:
-            pd.DataFrame(det_rows).sort_values("run_name").to_excel(
-                writer, sheet_name="det_yolo26", index=False
-            )
+            pd.DataFrame(det_rows).sort_values("run_name").to_excel(writer, sheet_name="det_yolo26", index=False)
         if seg_rows:
-            pd.DataFrame(seg_rows).sort_values("run_name").to_excel(
-                writer, sheet_name="seg_yolo26", index=False
-            )
+            pd.DataFrame(seg_rows).sort_values("run_name").to_excel(writer, sheet_name="seg_yolo26", index=False)
         if failed:
             pd.DataFrame(failed).to_excel(writer, sheet_name="failed", index=False)
 
